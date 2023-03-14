@@ -1,0 +1,39 @@
+#+TITLE: skey: simple keybinding
+
+* Introduction
+
+A *very* simple keybinding library. As of this writing, it’s just one function.
+
+* Installation
+  I just use straight+use-package like so:
+  #+begin_src elisp
+    (use-package skey
+      :straight (gumshoe :type git
+                         :host github
+                         :repo "Overdr0ne/skey"
+                         :branch "main")
+      )
+  #+end_src
+
+* Usage
+** Keybinding works largely the same as define-key
+  #+begin_src elisp
+    (skey-define-keys
+      '(c-mode-map)
+      ; note the backtick so we can use the comma to evaluate perspective-map
+      `(
+        ("C-M-a" c-beginning-of-defun)
+        ([remap end-of-defun] c-end-of-defun)
+        ("M-p" ,project-prefix-map)))
+  #+end_src
+** I like to define sets of keymaps
+  #+begin_src elisp
+    (setq +repl-maps '(term-mode-map shell-mode-map term-raw-map geiser-repl-mode-map))
+    (skey-define-keys
+      +repl-maps
+      (cl-set-difference +repl-maps '(term-mode-map))
+      `(("M-p" ,project-prefix-map)))
+  #+end_src
+
+* Similar Packages
+  - https://github.com/noctuid/general.el General does much the same thing as this package, and much more, providing many facilities for evil users-- all at the cost of a lot of added complexity. Further, because of the syntax of it’s key definers, you can’t nest functions to generate lists of keybindings.
