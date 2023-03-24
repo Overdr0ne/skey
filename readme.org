@@ -11,8 +11,7 @@ A *very* simple keybinding library. As of this writing, it’s just one function
       :straight (gumshoe :type git
                          :host github
                          :repo "Overdr0ne/skey"
-                         :branch "main")
-      )
+                         :branch "main"))
   #+end_src
 
 * Usage
@@ -30,10 +29,11 @@ A *very* simple keybinding library. As of this writing, it’s just one function
   #+begin_src elisp
     (setq +repl-maps '(term-mode-map shell-mode-map term-raw-map geiser-repl-mode-map))
     (skey-define-keys
-      +repl-maps
       (cl-set-difference +repl-maps '(term-mode-map))
       `(("M-p" ,project-prefix-map)))
   #+end_src
+  Notice, you can’t really achieve the above with [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Inheritance-and-Keymaps.html][keymap inheritance]].
 
 * Similar Packages
   - https://github.com/noctuid/general.el General does much the same thing as this package, and much more, providing many facilities for evil users-- all at the cost of a lot of added complexity. Further, because of the syntax of it’s key definers, you can’t nest functions to generate lists of keybindings.
+  - use-package’s `:bind`: I suspect this is what most people use. Works well enough if you only rebind on init, and don’t mind lots of duplicate code for all the bindings common between multiple keymaps.
