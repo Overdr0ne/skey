@@ -26,14 +26,12 @@
 ;;; Code:
 
 (defun skey-define-keys (keymaps defs)
-  (dolist (def defs)
-    (let* ((cmd-keys (nth 0 def))
-           (cmd-sym (nth 1 def))
-           (cmd-keys (if (stringp cmd-keys)
-                         (kbd cmd-keys)
-                       cmd-keys)))
-      (dolist (keymap keymaps)
-        (define-key (symbol-value keymap) cmd-keys cmd-sym)))))
+  (dolist (keymap keymaps)
+    (dolist (def defs)
+      (let ((cmd-keys (nth 0 def))
+            (cmd-sym (nth 1 def)))
+        (keymap-set (symbol-value keymap) cmd-keys cmd-sym)
+        ))))
 
 (provide 'skey)
 ;;; skey.el ends here
